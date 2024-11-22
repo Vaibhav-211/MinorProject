@@ -1,0 +1,98 @@
+<% layout("/layouts/boilerplate") %>
+
+<body>
+  <div class="row mt-3">
+    <div class="card col-6 offset-3 show-card event-card">
+      <h3><%= event.eventName %></h3>
+      
+   
+      <img
+        src="<%= event.image.url %>"
+        class="card-img-top show-img"
+        alt="event_image"
+      />
+      
+      <div class="card-body">
+        <p class="card-text">
+          <%= event.description %> <br />
+          <%= event.location %> <br />
+          <%= event.country %> <br />
+          <%= event.venueType %> <br />
+          Start: <%= new Date(event.startDateTime).toLocaleString("en-IN") %> <br />
+          End: <%= new Date(event.endDateTime).toLocaleString("en-IN") %> <br />
+          &#8377;<%= parseFloat(event.price).toLocaleString("en-IN") %> <br />
+        </p>
+      </div>
+    </div>
+
+
+  <br />
+
+  <div class="btns">
+    <a
+      href="/events/<%= event._id %>/edit"
+      class="btn btn-dark col-1 offset-3 edit-btn"
+      >Edit
+    </a>
+
+    <form action="/events/<%= event._id %>?_method=DELETE" method="POST" style="display:inline;">
+      <button class="btn btn-dark offset-5">Delete</button>
+    </form>
+  </div>
+  <div class="col-8 offset-3 mb-3">
+    <hr />
+    <h4>Leave a Review</h4>
+    <form
+      action="/events/<%= event._id %>/reviews"
+      method="POST"
+      novalidate
+      class="needs-validation"
+    >
+      <div class="mb-3 mt-3">
+        <label for="rating" class="form-label">Rating</label>
+        <input
+          type="range"
+          min="1"
+          max="5"
+          id="rating"
+          name="review[rating]"
+          class="form-range"
+        />
+      </div>
+      <div class="mb-3 mt-3">
+        <label for="comment" class="form-label">Comments</label>
+        <textarea
+          name="review[comment]"
+          id="comment"
+          cols="30"
+          rows="5"
+          class="form-control"
+          required
+        ></textarea>
+        <div class="invalid-feedback">Please add some comment for review</div>
+      </div>
+      <button class="btn btn-outline-dark">Submit</button>
+    </form>
+    <hr />
+    <p><b>All Reviews</b></p>
+    <div class="row">
+      <% for(review of event.reviews) { %>
+      <div class="card col-5 ms-3 mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Jane Doe</h5>
+          <p class="card-text"><%=review.comment%></p>
+          <p class="card-text"><%=review.rating%> stars</p>
+        </div>
+        <form
+          class="mb-3"
+          method="POST"
+          action="/events/<%=event._id%>/reviews/<%=review._id%>?_method=DELETE"
+        >
+          <button class="btn btn-sm btn-dark">Delete</button>
+        </form>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+</body>
