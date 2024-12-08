@@ -9,44 +9,33 @@ const PlanMateSchema = new Schema({
   },
   description: {
     type: String,
-    maxlength: 500, 
+    maxlength: 500,
   },
   image: {
-    filename: {
-      type: String,
-      default: "defaultImage",
-    },
-    url: {
-      type: String,
-      default:
-        "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      set: (v) =>
-        v && v.trim() !== ""
-          ? v
-          : "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
+    url: String,
+    filename: String,
   },
   startDateTime: {
     type: Date,
-    required: [true,"Start date and time are required."]
+    required: [true, "Start date and time are required."],
   },
   endDateTime: {
     type: Date,
-    required: [true,"End date and time are required."],
+    required: [true, "End date and time are required."],
     validate: {
       validator: function (value) {
         return value > this.startDateTime;
       },
       message: "End date must be after start date.",
     },
-  }, 
+  },
   location: {
     type: String,
-    maxlength: 100, 
+    maxlength: 100,
   },
   country: {
     type: String,
-    maxlength: 50, 
+    maxlength: 50,
   },
   venueType: {
     type: String,
@@ -58,6 +47,10 @@ const PlanMateSchema = new Schema({
     default: 0,
   },
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 PlanMateSchema.post("findOneAndDelete", async (event) => {
