@@ -1,10 +1,105 @@
 <%- layout("/layouts/boilerplate") %>
-<%=success%>
+<style>
+  #filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter {
+    text-align: center;
+    margin-right: 2rem;
+    margin-top: 2rem;
+    opacity: 0.7;
+  }
+  .filter:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+  .filter p {
+    font-size: 0.8rem;
+  }
+  .tax-info {
+    display: none;
+  }
+  .tax-toggle{
+    border: 1px solid black;
+    border-radius: 1rem; 
+    height: 3.2rem;
+    padding: 1rem;
+    margin-left: 2rem;
+    display: flex;
+    align-items: center;
+  }
+</style>
+
 <body>
-  <h3>All Events</h3>
-  <!-- <form method="GET" action="/events/new">
-    <button>Create New Event</button>
-  </form> -->
+  <div id="filters">
+    <!-- Filter for Event Type -->
+    <div class="filter">
+      <div><i class="fa-solid fa-calendar"></i></div>
+      <p>Event Type</p>
+    </div>
+    
+    <!-- Filter for Date -->
+    <div class="filter">
+      <div><i class="fa-solid fa-calendar-day"></i></div>
+      <p>Date</p>
+    </div>
+    
+    <!-- Filter for Location -->
+    <div class="filter">
+      <div><i class="fa-solid fa-map-marker-alt"></i></div>
+      <p>Location</p>
+    </div>
+    
+    <!-- Filter for Price -->
+    <div class="filter">
+      <div><i class="fa-solid fa-dollar-sign"></i></div>
+      <p>Price</p>
+    </div>
+    
+    <!-- Filter for Category -->
+    <div class="filter">
+      <div><i class="fa-solid fa-tags"></i></div>
+      <p>Category</p>
+    </div>
+    
+    <!-- Filter for Duration -->
+    <div class="filter">
+      <div><i class="fa-solid fa-clock"></i></div>
+      <p>Duration</p>
+    </div>
+
+    <div class="filter">
+      <div><i class="fa-solid fa-calendar-day"></i></div>
+      <p>Upcoming Events</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-clock"></i></div>
+      <p>Time-Based</p>
+    </div>
+    <div class="filter">
+      <div><i class="fa-solid fa-users"></i></div>
+      <p>Group Size</p>
+    </div>
+    
+  
+    <!-- Option to Display Total After Taxes -->
+    <div class="tax-toggle">
+      <div class="form-check-reverse form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="flexSwitchCheckDefault"
+        />
+        <label class="form-check-label" for="flexSwitchCheckDefault">
+          Display total after taxes
+        </label>
+      </div>
+    </div>
+  </div>
+  
   <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
     <% for (let event of allEvents) { %>
       <a href="/events/<%= event._id %>" class="event-link">
@@ -21,12 +116,26 @@
               <b><%= event.eventName %></b><br />
               <%= event.location %><br />
               &#8377;<%= event.price.toLocaleString("en-IN") %>
+              <i class="tax-info">&nbsp; &nbsp; +18%GST</i>
             </p>
           </div>
         </div>
       </a>
     <% } %>
   </div>
+  <script>
+    let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+    taxSwitch.addEventListener("click", () => {
+      let taxInfo = document.getElementsByClassName("tax-info");
+      for (info of taxInfo) {
+        if (info.style.display != "inline") {
+          info.style.display = "inline";
+        } else {
+          info.style.display = "none";
+        }
+      }
+    });
+  </script>
 </body>
 
 
